@@ -1,0 +1,1 @@
+# foundry-aws-lambda-sns-to-slack
