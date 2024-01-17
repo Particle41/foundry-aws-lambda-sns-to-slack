@@ -18,6 +18,7 @@ func handler(request events.SNSEvent) error {
 	service := services.NewAlertsService(slackNotificationsProvider)
 
 	for _, record := range request.Records {
+		println(record.SNS.Message)
 		service.SendNotification(record.SNS.Message)
 	}
 	return nil

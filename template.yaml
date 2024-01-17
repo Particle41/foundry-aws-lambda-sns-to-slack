@@ -15,7 +15,7 @@ Resources:
     Properties:
       Architectures:
       - x86_64
-      Handler: api
+      Handler: main
       Runtime: go1.x
       Events:
         SNSEvent:
@@ -25,9 +25,11 @@ Resources:
             SqsSubscription: false
       Environment:
         Variables:
-          SLACK_TOKEN: xoxb-2545517038-6296169739510-GSWZX8g6vIvPRpxEiU0Mq6rp
-          SLACK_CHANNEL_ID: C068G86M3U7
-      CodeUri: s3://p41-sar/921d79c74ee63f47c157d86ca7644d50
+          SLACK_TOKEN:
+            Fn::Sub: '{{resolve:ssm:/foundry/SLACK_TOKEN:1}}'
+          SLACK_CHANNEL_ID:
+            Fn::Sub: '{{resolve:ssm:/foundry/SLACK_CHANNEL_ID:1}}'
+      CodeUri: s3://p41-sar/f1841ec1bd9eeaf40b9718fcc4ec48bf
     Metadata:
       SamResourceId: SNSToSlackFunction
 Metadata:
@@ -35,7 +37,7 @@ Metadata:
     Name: foundry-aws-lambda-sns-to-slack
     Description: An AWS Lambda function that sends SNS alert messages to Slack
     Author: Particle 41
-    SemanticVersion: '0.0.4'
+    SemanticVersion: '0.0.13'
 Outputs:
   SNSToSlackFunction:
     Description: First Lambda Function ARN

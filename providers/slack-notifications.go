@@ -3,7 +3,6 @@ package providers
 import (
 	"os"
 
-	"github.com/rs/zerolog/log"
 	"github.com/slack-go/slack"
 )
 
@@ -18,9 +17,10 @@ type Slack struct {
 func (s *Slack) sendMessage(message string) error {
 	ChannelID, timestamp, err := s.SlackClient.PostMessage(s.ChannelID, slack.MsgOptionText(message, false))
 	if err != nil {
+		println("error", err.Error())
 		return err
 	}
-	log.Info().Str("message", message).Msgf("Message sent successfully to %s channel at %s", ChannelID, timestamp)
+	println("Message sent successfully to %s channel at %s", ChannelID, timestamp)
 	return nil
 }
 
