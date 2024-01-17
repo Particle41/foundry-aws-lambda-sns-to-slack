@@ -6,7 +6,7 @@ import (
 	"github.com/slack-go/slack"
 )
 
-type SlackNotificationsProvider struct {
+type SlackNotificationsApiProvider struct {
 }
 
 type Slack struct {
@@ -31,11 +31,11 @@ func initSlack() *Slack {
 	}
 }
 
-func (s *SlackNotificationsProvider) SendNotification(message string) error {
+func (s *SlackNotificationsApiProvider) SendNotification(message string) error {
 	slack := initSlack()
 	return slack.sendMessage(message)
 }
 
-func NewSlackNotificationsProvider() *SlackNotificationsProvider {
-	return &SlackNotificationsProvider{}
+func NewSlackNotificationsApiProvider() *SlackNotificationsApiProvider {
+	return &SlackNotificationsApiProvider{}
 }

@@ -13,12 +13,13 @@ func handler(request events.SNSEvent) error {
 	if request.Records == nil {
 		return nil
 	}
-
-	slackNotificationsProvider := providers.NewSlackNotificationsProvider()
+	// Change this line to use the provider you want (in the future we will use a factory to create the provider)
+	slackNotificationsProvider := providers.NewSlackNotificationsWebhookProvider()
+	// slackNotificationsProvider := providers.NewSlackNotificationsApiProvider()
 	service := services.NewAlertsService(slackNotificationsProvider)
 
 	for _, record := range request.Records {
-		println(record.SNS.Message)
+		println("Message", record.SNS.Message)
 		service.SendNotification(record.SNS.Message)
 	}
 	return nil

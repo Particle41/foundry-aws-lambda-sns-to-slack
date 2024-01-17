@@ -29,6 +29,8 @@ Resources:
             Fn::Sub: '{{resolve:ssm:/foundry/SLACK_TOKEN:1}}'
           SLACK_CHANNEL_ID:
             Fn::Sub: '{{resolve:ssm:/foundry/SLACK_CHANNEL_ID:1}}'
+          SLACK_WEBHOOK_URL:
+            Fn::Sub: '{{resolve:ssm:/foundry/SLACK_WEBHOOK_URL:1}}'
       CodeUri: s3://p41-sar/f1841ec1bd9eeaf40b9718fcc4ec48bf
     Metadata:
       SamResourceId: SNSToSlackFunction
@@ -37,7 +39,7 @@ Metadata:
     Name: foundry-aws-lambda-sns-to-slack
     Description: An AWS Lambda function that sends SNS alert messages to Slack
     Author: Particle 41
-    SemanticVersion: '0.0.13'
+    SemanticVersion: 1.0.0
 Outputs:
   SNSToSlackFunction:
     Description: First Lambda Function ARN
