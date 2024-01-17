@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'sam-app
+
+  Sample SAM Template for sam-app
+
+  '
+Globals:
+  Function:
+    Timeout: 5
+    MemorySize: 128
+Resources:
+  SNSToSlackFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+      - x86_64
+      Handler: main
+      Runtime: go1.x
+      Events:
+        SNSEvent:
+          Type: SNS
+          Properties:
+            Topic: arn:aws:sns:us-east-1:592678693542:alert-notifications-test
+            SqsSubscription: false
+      Environment:
+        Variables:
+          SLACK_TOKEN:
+            Fn::Sub: '{{resolve:ssm:/foundry/SLACK_TOKEN:1}}'
+          SLACK_CHANNEL_ID:
+            Fn::Sub: '{{resolve:ssm:/foundry/SLACK_CHANNEL_ID:1}}'
+          SLACK_WEBHOOK_URL:
+            Fn::Sub: '{{resolve:ssm:/foundry/SLACK_WEBHOOK_URL:1}}'
+      CodeUri: s3://p41-sar/f1841ec1bd9eeaf40b9718fcc4ec48bf
+    Metadata:
+      SamResourceId: SNSToSlackFunction
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: foundry-aws-lambda-sns-to-slack
+    Description: An AWS Lambda function that sends SNS alert messages to Slack
+    Author: Particle 41
+    SemanticVersion: 1.0.0
+Outputs:
+  SNSToSlackFunction:
+    Description: First Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - SNSToSlackFunction
+      - Arn
+  SNSToSlackFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - SNSToSlackFunctionRole
+      - Arn

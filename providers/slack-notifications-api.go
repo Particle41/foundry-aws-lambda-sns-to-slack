@@ -1,0 +1,41 @@
+package providers
+
+import (
+	"os"
+
+	"github.com/slack-go/slack"
+)
+
+type SlackNotificationsApiProvider struct {
+}
+
+type Slack struct {
+	SlackClient *slack.Client
+	ChannelID   string
+}
+
+func (s *Slack) sendMessage(message string) error {
+	ChannelID, timestamp, err := s.SlackClient.PostMessage(s.ChannelID, slack.MsgOptionText(message, false))
+	if err != nil {
+		println("error", err.Error())
+		return err
+	}
+	println("Message sent successfully to %s channel at %s", ChannelID, timestamp)
+	return nil
+}
+
+func initSlack() *Slack {
+	return &Slack{
+		SlackClient: slack.New(os.Getenv("SLACK_TOKEN")),
+		ChannelID:   os.Getenv("SLACK_CHANNEL_ID"),
+	}
+}
+
+func (s *SlackNotificationsApiProvider) SendNotification(message string) error {
+	slack := initSlack()
+	return slack.sendMessage(message)
+}
+
+func NewSlackNotificationsApiProvider() *SlackNotificationsApiProvider {
+	return &SlackNotificationsApiProvider{}
+}
